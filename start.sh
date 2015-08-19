@@ -1,6 +1,7 @@
 #!/bin/bash
 
 MODE=
+KEY=
 
 if [ "$1" == "backup" ]; then
     MODE='dump'
@@ -21,6 +22,11 @@ if [ "$MODE" == "restore" ]; then
             >&2 echo "There was a problem fetching the backup from S3"
             exit $?
         fi
+    fi
+
+    if [ -z ${2+x} ]; then
+        jq '[.[] | select(.key | startswith("'"$2"'"))]' /tmp/dump.json > /tmp/tmp.json
+        mv /tmp/tmp.json /tmp/dump.json
     fi
 fi
 
