@@ -27,6 +27,8 @@ if [ "$MODE" == "restore" ]; then
     if [ -z ${2+x} ]; then
         jq '[.[] | select(.key | startswith("'"$2"'"))]' /tmp/dump.json > /tmp/tmp.json
         mv /tmp/tmp.json /tmp/dump.json
+        cat /tmp/dump.json
+        exit 1
     fi
 fi
 
